@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="310.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.userInterfaceLaag.RegistreerVliegtuigController">
+   <children>
+      <HBox layoutX="20.0" prefHeight="40.0" prefWidth="430.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="215.0">
+               <children>
+                  <Label text="Fabrikant">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ComboBox fx:id="fabrikantComboBox" onAction="#fabrikant" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" prefHeight="41.0" prefWidth="215.0">
+               <children>
+                  <TextField fx:id="contactTextfield" alignment="CENTER_RIGHT" editable="false">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="Contact">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox layoutX="20.0" layoutY="60.0" prefHeight="40.0" prefWidth="430.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="215.0">
+               <children>
+                  <Label text="Type">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ComboBox fx:id="typeCombobox" onAction="#type" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="28.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" prefHeight="41.0" prefWidth="215.0">
+               <children>
+                  <TextField fx:id="capaciteitTextField" alignment="CENTER_RIGHT" editable="false" nodeOrientation="RIGHT_TO_LEFT">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="Capaciteit">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <TitledPane animated="false" collapsible="false" layoutX="20.0" layoutY="119.0" prefHeight="128.0" prefWidth="430.0" text="Nieuw Vliegtuig">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="70.0" prefWidth="428.0">
+               <children>
+                  <VBox layoutX="29.0" layoutY="16.0" prefHeight="69.0" prefWidth="389.0" AnchorPane.bottomAnchor="18.400000000000006" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="406.0">
+                           <children>
+                              <Label text="Naam">
+                                 <HBox.margin>
+                                    <Insets right="30.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="naamTextField" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="214.0">
+                           <children>
+                              <Label text="In gebruik">
+                                 <HBox.margin>
+                                    <Insets right="8.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <DatePicker fx:id="InGebruikDatePicker" onAction="#inGebruik" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <Button fx:id="buttonOK" layoutX="297.0" layoutY="264.0" mnemonicParsing="false" onAction="#ok" prefHeight="30.0" prefWidth="70.0" text="OK" />
+      <Button fx:id="buttonCancel" layoutX="380.0" layoutY="264.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="70.0" text="Cancel" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane prefHeight="310.0" prefWidth="444.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.userInterfaceLaag.RegistreerLuchthavenController">
+   <children>
+      <Label layoutX="32.0" layoutY="35.0" text="Land" />
+      <ComboBox fx:id="landComboBox" layoutX="123.0" layoutY="31.0" prefWidth="150.0" />
+      <Label layoutX="301.0" layoutY="35.0" text="Code" />
+      <TextField fx:id="landCodeTextField" layoutX="349.0" layoutY="30.0" prefHeight="26.0" prefWidth="55.0" />
+      <Pane layoutX="23.0" layoutY="70.0" prefHeight="169.0" prefWidth="398.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="158.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="398.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="26.0" layoutX="14.0" layoutY="1.0" stroke="#f2f2f2" strokeType="INSIDE" width="114.0" />
+            <Label layoutX="19.0" layoutY="6.0" text="Nieuwe Luchthaven" />
+            <Label layoutX="19.0" layoutY="40.0" text="Naam" />
+            <TextField fx:id="naamTextField" layoutX="100.0" layoutY="36.0" />
+            <Label layoutX="19.0" layoutY="85.0" text="Code" />
+            <TextField layoutX="100.0" layoutY="81.0" />
+            <Label layoutX="21.0" layoutY="130.0" text="Werkplaats" />
+            <RadioButton fx:id="jaRadioButton" layoutX="100.0" layoutY="130.0" mnemonicParsing="false" text="Ja">
+               <toggleGroup>
+                  <ToggleGroup fx:id="werkplaats" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="neeRadioButton" layoutX="176.0" layoutY="128.0" mnemonicParsing="false" text="Nee" toggleGroup="$werkplaats" />
+         </children>
+      </Pane>
+      <Button fx:id="buttonOK" layoutX="280.0" layoutY="252.0" mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="65.0" text="OK" />
+      <Button fx:id="buttonCancel" layoutX="355.0" layoutY="252.0" mnemonicParsing="false" onAction="#cancel" prefHeight="26.0" prefWidth="65.0" text="Cancel" />
+   </children>
+</AnchorPane>

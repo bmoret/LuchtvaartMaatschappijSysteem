@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="385.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.userInterfaceLaag.BoekVluchtController">
+   <children>
+      <Label layoutX="33.0" layoutY="14.0" text="Vlucht boeken:" />
+      <Pane layoutX="33.0" layoutY="32.0" prefHeight="103.0" prefWidth="526.0">
+         <children>
+            <Label layoutY="33.0" text="Vertrekpunt" />
+            <ComboBox layoutX="103.0" layoutY="29.0" prefWidth="150.0" />
+            <Label layoutX="267.0" layoutY="33.0" text="Bestemming" />
+            <ComboBox layoutX="370.0" layoutY="29.0" prefWidth="150.0" />
+            <Label layoutY="68.0" text="Vertrekdatum" />
+            <ComboBox layoutX="103.0" layoutY="64.0" prefWidth="150.0" />
+            <Label layoutX="267.0" layoutY="68.0" text="Vertrektijd" />
+            <ComboBox layoutX="370.0" layoutY="64.0" prefWidth="150.0" />
+            <Label layoutX="243.0" layoutY="6.0" text="Vlucht: " />
+         </children></Pane>
+      <Pane layoutX="33.0" layoutY="127.0" prefHeight="167.0" prefWidth="526.0">
+         <children>
+            <Label layoutX="223.0" layoutY="14.0" text="Klantgegevens:" />
+            <Label layoutY="41.0" text="Voornaam" />
+            <TextField layoutX="103.0" layoutY="37.0" />
+            <Label layoutX="267.0" layoutY="41.0" text="Achternaam" />
+            <TextField layoutX="370.0" layoutY="37.0" />
+            <Label layoutY="76.0" text="Straat + Huisnr" />
+            <TextField layoutX="103.0" layoutY="72.0" />
+            <Label layoutX="267.0" layoutY="76.0" text="Woonplaats" />
+            <TextField layoutX="370.0" layoutY="72.0" />
+            <CheckBox layoutX="143.0" layoutY="109.0" mnemonicParsing="false" text="Bestaande klant gegevens gebruiken" />
+            <Button layoutX="176.0" layoutY="135.0" mnemonicParsing="false" text="Controleer klantgegevens" />
+         </children>
+      </Pane>
+      <Pane layoutX="33.0" layoutY="286.0" prefHeight="122.0" prefWidth="526.0">
+         <children>
+            <Label layoutX="248.0" layoutY="14.0" text="Stoel:" />
+            <Label layoutY="40.0" text="Klasse stoel" />
+            <ComboBox layoutX="103.0" layoutY="37.0" prefWidth="150.0" />
+            <Label layoutX="267.0" layoutY="40.0" text="Vrije stoelen:" />
+            <Label layoutX="375.0" layoutY="40.0" prefHeight="57.0" prefWidth="137.0" />
+            <Button layoutX="231.0" layoutY="85.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Boek" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
