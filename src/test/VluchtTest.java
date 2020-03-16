@@ -22,7 +22,7 @@ public class VluchtTest {
 	static Vliegtuig vt1, vgt;
 	static Luchthaven lh1, lh2;
 	static Vlucht vl1, vl2;
-	static Calendar testDatumVertrekDag, testUrenAankomst, testDatumDatumplus1, dagTijd, vtr, aan;
+	static Calendar testDatumVertrekDag, testUrenAankomst, testDatumDatumplus1, dagTijd, vtr, aan, datum;
 
 
 	@BeforeEach
@@ -32,7 +32,7 @@ public class VluchtTest {
 			f1 = new Fabrikant("Airbus", "G. Dejenelle");
 			vtt1 = f1.creeervliegtuigtype("A-200", 140);
 			Calendar datum = Calendar.getInstance();
-			datum.set(2000, 01, 01);
+			datum.set(2000, 01, 01, 24,0,0);
 			vt1 = new Vliegtuig(lvm, vtt1, "Luchtbus 100", datum);
 			Land l1 = new Land("Nederland", 31);
 			Land l2 = new Land("België", 32);
@@ -184,6 +184,30 @@ public class VluchtTest {
 		}
 	}
 
+	/* test7* zou dubbele error moeten geven?*/
+	@Test
+	public void test2MinuutGeledenVertrek1MinuutGeledenAangekomen(){
+		Vlucht vlucht = vl1;
+		TimeZone tz = TimeZone.getTimeZone("GMT");
+		Calendar vertrek = Calendar.getInstance();
+		vertrek.setTimeZone(tz);
+
+		try {
+			vertrek.add(Calendar.MINUTE,-2);
+			vl1.zetVertrekTijd(vertrek);//moet al exception opgeven dat het in het verleden ligt
+			vertrek.add(Calendar.MINUTE,1);
+			vl1.zetAankomstTijd(vertrek);
+			assertTrue(vl1.getVertrekTijd().equals(null));
+			assertTrue(vl1.getAankomstTijd().equals(null));
+			throw new IllegalArgumentException("Tijd in het verleden");//throwt new exception, omdat datum niet in verleden mag liggen
+
+		} catch (IllegalArgumentException | VluchtException e) {
+			assertEquals("Tijd in het verleden",e.getMessage());
+			System.out.println(e);
+		}
+	}
+	/* test8*/
+
 	/* test9*/
 	@Test
 	public void testAankomstVoorVertrek_False() {
@@ -228,23 +252,25 @@ public class VluchtTest {
 	/* test11*/
 	@Test
 	public void testOverlappendeVlucht_Vertrek() {
+
 		Calendar vertr = Calendar.getInstance();
 		vertr.set(2020, Calendar.MARCH, 30, 12, 15, 0);
 		Calendar aank = Calendar.getInstance();
 		aank.set(2020, Calendar.MARCH, 30, 15, 15, 0);
 		Vlucht vlucht1 = new Vlucht(vt1, lh1, lh2, vertr, aank);
+
 		vertr.add(Calendar.HOUR,1); //vertrek vlucht 2 tussen vertek en aankomst vlucht 1
-		Vlucht vlucht2 = new Vlucht();
+		Vlucht vlucht2 = new Vlucht(vt1, lh1, lh2, vertr, aank);
 
 		try {
 			vlucht1.bewaar();
-			vlucht2.zetVliegtuig(vt1);
+			System.out.println(vlucht2.getVliegtuig());
 			vlucht2.zetVertrekTijd(vertr);
 			Calendar testVertek = vlucht2.getVertrekTijd();
 			assertNotNull(testVertek);
 
 		} catch (VluchtException e) {
-			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 14:15:00 CEST 2020",e.getMessage());
+			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 13:15:00 CEST 2020",e.getMessage());
 		}
 	}
 
