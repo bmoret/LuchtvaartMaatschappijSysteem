@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import javax.swing.*;
 import javax.swing.plaf.SeparatorUI;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -149,13 +150,31 @@ public class VluchtTest {
 
 		}
 	}
+
+
+	/* test6, In Class Vlucht zit geen code die terug geeft dat opgegeven tijd voor Nu is*/
+	@Test
+	public void test1MinuutGeledenVertrek(){
+		Vlucht vlucht = vl1;
+		TimeZone tz = TimeZone.getTimeZone("GMT");
+		Calendar vertrek = Calendar.getInstance();
+		vertrek.setTimeZone(tz);
+
+		try {
+			vertrek.add(Calendar.MINUTE,-1);
+			vl1.zetVertrekTijd(vertrek);
+		} catch (VluchtException e) {
+			assertEquals("Geen geldig tijdstip!",e.getMessage());
+			System.out.println(e);
+		}
+	}
+
 	/* test9*/
 	@Test
 	public void testAankomstVoorVertrek_False() {
 		Vlucht vlucht = vl1;
 		Calendar vertrek = null;
 		Calendar aankomst = null;
-		Calendar test = null;
 		try {
 			vlucht.zetAankomstTijd(null);
 			vertrek = vlucht.getVertrekTijd();
@@ -165,8 +184,10 @@ public class VluchtTest {
 			vl1.zetAankomstTijd(aankomst);
 		} catch (VluchtException e) {
 			assertEquals("Aankomsttijd voor vertrektijd",e.getMessage());
+			System.out.println(e);
 		}
 	}
+
 	/* test10*/
 	@Test
 	public void testAankomstVoorVertrek_True() {
@@ -185,8 +206,10 @@ public class VluchtTest {
 			assertFalse(test.equals(null));
 		} catch (VluchtException e) {
 			assertEquals("Aankomsttijd voor vertrektijd",e.getMessage());
+			System.out.println(e);
 		}
 	}
+
 	/* test11*/
 	@Test
 	public void testOverlappendeVlucht_Vertrek() {
@@ -205,7 +228,8 @@ public class VluchtTest {
 			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 14:15:00 CEST 2020",e.getMessage());
 		}
 	}
-	/* test11, Om deze test uittevoeren moet code in Vlucht worden aan gepast, op dit moment is de methode isBezet
+
+	/* test12, Om deze test uittevoeren moet code in Vlucht worden aan gepast, op dit moment is de methode isBezet
 	* alleen gebruikt door de methode zetVertrekTijd en niet door de methode zetAankomstTijd*/
 	@Test
 	public void testOverlappendeVlucht_Aankomst() {
