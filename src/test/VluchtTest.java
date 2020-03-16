@@ -184,7 +184,7 @@ public class VluchtTest {
 
 	/* test7* zou dubbele error moeten geven?*/
 	@Test
-	public void test2MinuutGeledenVertrek1MinuutGeledenAangekomen(){
+	public void test7_test2MinuutGeledenVertrek1MinuutGeledenAangekomen(){
 		Vlucht vlucht = vl1;
 		TimeZone tz = TimeZone.getTimeZone("GMT");
 		Calendar vertrek = Calendar.getInstance();
