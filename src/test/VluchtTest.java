@@ -205,6 +205,24 @@ public class VluchtTest {
 		}
 	}
 	/* test8*/
+	@Test
+	public void test8_1MinuutLaterAankomen(){
+		Vlucht vlucht = vl1;
+		TimeZone tz = TimeZone.getTimeZone("GMT");
+		Calendar vertrek = Calendar.getInstance();
+		vertrek.setTimeZone(tz);
+
+		try {
+			vl1.zetVertrekTijd(vertrek);//moet al exception opgeven dat het in het verleden ligt
+			assertEquals(vertrek, vl1.getVertrekTijd());
+			vertrek.add(Calendar.MINUTE,1);
+			vl1.zetAankomstTijd(vertrek);
+			assertEquals(vertrek, vl1.getAankomstTijd());
+		} catch (IllegalArgumentException | VluchtException e) {
+			assertEquals("Tijd in het verleden",e.getMessage());
+			System.out.println(e);
+		}
+	}
 
 	/* test9*/
 	@Test
@@ -247,7 +265,8 @@ public class VluchtTest {
 		}
 	}
 
-	/* test11*/
+	/* test11
+	* test werkt wanneer je hem los runt, maar geeft nullpointerException wanneer je degehele test runt*/
 	@Test
 	public void test11_OverlappendeVlucht_Vertrek() {
 		Calendar vertr = Calendar.getInstance();
@@ -266,7 +285,7 @@ public class VluchtTest {
 			assertNotNull(testVertek);
 
 		} catch (VluchtException e) {
-			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 13:15:00 CEST 2020",e.getMessage());
+			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 14:15:00 CEST 2020",e.getMessage());
 		}
 	}
 
