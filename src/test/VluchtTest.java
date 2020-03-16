@@ -221,7 +221,8 @@ public class VluchtTest {
 			vlucht2.zetVliegtuig(vt1);
 			vlucht2.zetVertrekTijd(vertr);
 			vlucht2.zetAankomstTijd(aank);
-
+			Calendar test = vlucht2.getAankomstTijd();
+			assertTrue(test.equals(null));
 		} catch (VluchtException e) {
 			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 14:15:00 CEST 2020",e.getMessage());
 		}
