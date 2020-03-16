@@ -20,7 +20,8 @@ public class VluchtTest {
 	static Vliegtuig vt1;
 	static Luchthaven lh1, lh2;
 	static Vlucht vl1, vl2;
-	static Calendar testDatumVertrekDag, testUrenAankomst, testDatumDatumplus1, dagTijd;
+	static Calendar testDatumVertrekDag, testUrenAankomst, testDatumDatumplus1, dagTijd, vtr, aan;
+
 
 	@BeforeEach
 	public void initialize() {
@@ -162,11 +163,9 @@ public class VluchtTest {
 		try {
 			vertrek.add(Calendar.MINUTE,-1);
 			vl1.zetVertrekTijd(vertrek);//moet al exception opgeven dat het in het verleden ligt
-
 			vertrek.add(Calendar.MINUTE,1);
 			assertTrue(vl1.getVertrekTijd().before(vertrek));
-			throw new IllegalArgumentException("Tijd in het verleden");//throwt new exception, omdat datum niet in verleden mag liggen
-
+			throw new IllegalArgumentException("Tijd in het verleden");//throwt nieuww exception, omdat datum niet in verleden mag liggen
 		} catch (IllegalArgumentException | VluchtException e) {
 			assertEquals("Tijd in het verleden",e.getMessage());
 			System.out.println(e);
@@ -255,4 +254,21 @@ public class VluchtTest {
 			assertEquals("Vliegtuig reeds bezet op Mon Mar 30 14:15:00 CEST 2020",e.getMessage());
 		}
 	}
+
+	/*test15, jona*/
+	@Test
+	public void test(){
+		vtr = Calendar.getInstance();
+		aan = Calendar.getInstance();
+		vtr.set(2020, Calendar.APRIL, 1, 8, 0 );
+		aan.set(2020, Calendar.APRIL, 1, 9, 30);
+		try{
+			Vlucht vlucht = new Vlucht(null, lh1, lh2, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
+
+			assertEquals(vlucht.getVliegtuig(), null, "Vliegtuig ongeldig");
+		} catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+	}
+
 }
