@@ -2,8 +2,10 @@ package test;
 
 import main.domeinLaag.*;
 
+import main.userInterfaceLaag.OverzichtVliegtuigenDataModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.swing.*;
 import javax.swing.plaf.SeparatorUI;
@@ -14,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VluchtTest {
 
-	static LuchtvaartMaatschappij lvm;
+	static LuchtvaartMaatschappij lvm, lh;
 	static Fabrikant f1;
 	static VliegtuigType vtt1;
-	static Vliegtuig vt1;
+	static Vliegtuig vt1, vgt;
 	static Luchthaven lh1, lh2;
 	static Vlucht vl1, vl2;
 	static Calendar testDatumVertrekDag, testUrenAankomst, testDatumDatumplus1, dagTijd, vtr, aan;
@@ -59,6 +61,13 @@ public class VluchtTest {
 
 			dagTijd = Calendar.getInstance();
 			dagTijd.set(2025, Calendar.SEPTEMBER,1,24,0);
+
+			vtr = Calendar.getInstance();
+			aan = Calendar.getInstance();
+			vtr.set(2020, Calendar.APRIL, 1, 8, 0 );
+			aan.set(2020, Calendar.APRIL, 1, 9, 30);
+			lh = new LuchtvaartMaatschappij("KLM");
+			vgt = new Vliegtuig(lh);
 
 
 
@@ -142,12 +151,12 @@ public class VluchtTest {
 	/* test5*/
 	@Test
 	public void testVertrekDatumVoorVertrekDatumplus1vast_True() {
-		Vlucht vlucht = new Vlucht();
+		Vlucht vlucht1 = new Vlucht();
 		try {
-			vlucht.zetVertrekTijd(testDatumDatumplus1);
-			testDatumDatumplus1.set(2025, Calendar.SEPTEMBER, 30, 12,1);
-			vlucht.zetAankomstTijd(testDatumDatumplus1);
-			assertTrue(vlucht.getVertrekTijd().getTime().before(vlucht.getAankomstTijd().getTime()));
+			vlucht1.zetVertrekTijd(testDatumDatumplus1);
+			testDatumDatumplus1.set(2024, Calendar.SEPTEMBER, 30, 12,1);
+			vlucht1.zetAankomstTijd(testDatumDatumplus1);
+			assertTrue(vlucht1.getVertrekTijd().getTime().before(vlucht1.getAankomstTijd().getTime()));
 		} catch (IllegalArgumentException | VluchtException e) {
 			System.out.println(e);
 		}
@@ -318,18 +327,77 @@ public class VluchtTest {
 
 	/*test15, jona*/
 	@Test
-	public void test(){
-		vtr = Calendar.getInstance();
-		aan = Calendar.getInstance();
-		vtr.set(2020, Calendar.APRIL, 1, 8, 0 );
-		aan.set(2020, Calendar.APRIL, 1, 9, 30);
+	public void testVluchtNietZonderVliegtuig(){
 		try{
 			Vlucht vlucht = new Vlucht(null, lh1, lh2, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
-
-			assertEquals(vlucht.getVliegtuig(), null, "Vliegtuig ongeldig");
-		} catch (IllegalArgumentException e){
+			vlucht.bewaar();
+			assertNotEquals(vlucht.getVliegtuig(), null, "Vliegtuig ongeldig");
+		} catch (VluchtException e){
 			System.out.println(e.getMessage());
 		}
 	}
+
+	/*test16, jona*/
+	@Test
+	public void testVluchtNietZonderVertrekLuchthaven(){
+		try{
+			Vlucht vlucht = new Vlucht(vgt, null, lh2, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
+			vlucht.bewaar();
+			assertNotEquals(vlucht.getVertrekPunt(), null, "Vertrekpunt ongeldig");
+		} catch (VluchtException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	/*test17, jona*/
+	@Test
+	public void testVluchtNietZonderAankomstLuchthaven(){
+		try{
+			Vlucht vlucht = new Vlucht(vgt, lh1, null, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
+			vlucht.bewaar();
+			assertNotEquals(vlucht.getBestemming(), null, "Bestemming ongeldig");
+		} catch (VluchtException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	/*test18, jona*/
+	@Test
+	public void testVluchtNietZonderCorrecteVertrekTijd(){
+		Calendar tijd = null;
+		try{
+			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, tijd, aan);// Zou een exception moeten geven voor geen Vliegtuig
+			vlucht.bewaar();
+			assertNotEquals(vlucht.getVertrekTijd(), null, "Vertrektijd ongeldig");
+		} catch (VluchtException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	/*test19, jona*/
+	@Test
+	public void testVluchtNietZonderCorrecteAankomstTijd(){
+		try{
+			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, vtr, null);// Zou een exception moeten geven voor geen Vliegtuig
+			vlucht.bewaar();
+			assertNotEquals(vlucht.getVertrekTijd(), null, "Aankomsttijd ongeldig");
+		} catch (VluchtException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	/*test20, jona*/
+	@Test
+	public void testVluchtCorrect(){
+		try{
+			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
+			vlucht.bewaar();
+			assertNotEquals(vlucht.getVertrekPunt(), null, "Vliegtuig ongeldig");
+			assertNotEquals(vlucht.getVertrekPunt(), null, "Vertrekpunt ongeldig");
+			assertNotEquals(vlucht.getBestemming(), null, "Bestemming ongeldig");
+			assertNotEquals(vlucht.getVertrekTijd(), null, "Vertrektijd ongeldig");
+			assertNotEquals(vlucht.getAankomstTijd(), null, "Aankomsttijd ongeldig");
+		} catch (VluchtException e){
+			System.out.println(e.getMessage());
+		}
+	}
+
+
 
 }
