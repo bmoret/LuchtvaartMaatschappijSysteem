@@ -117,9 +117,10 @@ public class VluchtTest {
 		Vlucht vlucht = new Vlucht();
 		try {
 			vlucht.zetVertrekTijd(testDatumVertrekDag);
+			assertFalse(vlucht.getVertrekTijd().equals(testDatumVertrekDag));
 
-		} catch (IllegalArgumentException | VluchtException e) {
-			System.out.println(e);
+		} catch (VluchtException e) {
+			assertEquals("Geen geldig tijdstip!", e.getMessage());
 		}
 	}
 
@@ -129,8 +130,8 @@ public class VluchtTest {
 		Vlucht vlucht = new Vlucht();
 		try {
 			vlucht.zetAankomstTijd(testUrenAankomst);
-		} catch (IllegalArgumentException | VluchtException e) {
-			System.out.println(e);
+		} catch (VluchtException e) {
+			assertEquals("Geen geldig tijdstip!", e.getMessage());
 		}
 	}
 
@@ -146,8 +147,6 @@ public class VluchtTest {
 			assertTrue(vlucht.getVertrekTijd().getTime().before(vlucht.getAankomstTijd().getTime()));
 		} catch (IllegalArgumentException | VluchtException e) {
 			System.out.println(e);
-			assertTrue(vlucht.getVertrekTijd().getTime().before(vlucht.getAankomstTijd().getTime()));
-
 		}
 	}
 
@@ -162,9 +161,14 @@ public class VluchtTest {
 
 		try {
 			vertrek.add(Calendar.MINUTE,-1);
-			vl1.zetVertrekTijd(vertrek);
-		} catch (VluchtException e) {
-			assertEquals("Geen geldig tijdstip!",e.getMessage());
+			vl1.zetVertrekTijd(vertrek);//moet al exception opgeven dat het in het verleden ligt
+
+			vertrek.add(Calendar.MINUTE,1);
+			assertTrue(vl1.getVertrekTijd().before(vertrek));
+			throw new IllegalArgumentException("Tijd in het verleden");//throwt new exception, omdat datum niet in verleden mag liggen
+
+		} catch (IllegalArgumentException | VluchtException e) {
+			assertEquals("Tijd in het verleden",e.getMessage());
 			System.out.println(e);
 		}
 	}
