@@ -32,7 +32,7 @@ public class VluchtTest {
 			f1 = new Fabrikant("Airbus", "G. Dejenelle");
 			vtt1 = f1.creeervliegtuigtype("A-200", 140);
 			Calendar datum = Calendar.getInstance();
-			datum.set(2000, 01, 01, 24,0,0);
+			datum.set(2000, 01, 01);
 			vt1 = new Vliegtuig(lvm, vtt1, "Luchtbus 100", datum);
 			Land l1 = new Land("Nederland", 31);
 			Land l2 = new Land("België", 32);
@@ -85,7 +85,7 @@ public class VluchtTest {
 	 */
 
 	@Test
-	public void testBestemmingMagNietGelijkZijnAanVertrek_False() {
+	public void test1_BestemmingMagNietGelijkZijnAanVertrek_False() {
 		Vlucht vlucht = new Vlucht();
 		try {
 			vlucht.zetVliegtuig(vt1);
@@ -103,7 +103,7 @@ public class VluchtTest {
 	}
 
 	@Test
-	public void testBestemmingMagNietGelijkZijnAanVertrek_True() {
+	public void test2_BestemmingMagNietGelijkZijnAanVertrek_True() {
 		Vlucht vlucht = new Vlucht();
 		Luchthaven bestemming;
 		try {
@@ -123,7 +123,7 @@ public class VluchtTest {
 
 	/* test3*/
 	@Test
-	public void testDagDatumMagNietHogerZijnDanErInDeMaandZitten_True() {
+	public void test3_DagDatumMagNietHogerZijnDanErInDeMaandZitten_True() {
 		Vlucht vlucht = new Vlucht();
 		try {
 			vlucht.zetVertrekTijd(testDatumVertrekDag);
@@ -136,7 +136,7 @@ public class VluchtTest {
 
 	/* test4*/
 	@Test
-	public void testTijdMagNietHogerZijnDanTijdInEenDag_True() {
+	public void test4_TijdMagNietHogerZijnDanTijdInEenDag_True() {
 		Vlucht vlucht = new Vlucht();
 		try {
 			vlucht.zetAankomstTijd(testUrenAankomst);
@@ -150,7 +150,7 @@ public class VluchtTest {
 
 	/* test5*/
 	@Test
-	public void testVertrekDatumVoorVertrekDatumplus1vast_True() {
+	public void test5_VertrekDatumVoorVertrekDatumplus1vast_True() {
 		Vlucht vlucht1 = new Vlucht();
 		try {
 			vlucht1.zetVertrekTijd(testDatumDatumplus1);
@@ -165,7 +165,7 @@ public class VluchtTest {
 
 	/* test6, In Class Vlucht zit geen code die terug geeft dat opgegeven tijd voor Nu is*/
 	@Test
-	public void test1MinuutGeledenVertrek(){
+	public void test6_EenMinuutGeledenVertrek(){
 		Vlucht vlucht = vl1;
 		TimeZone tz = TimeZone.getTimeZone("GMT");
 		Calendar vertrek = Calendar.getInstance();
@@ -174,9 +174,7 @@ public class VluchtTest {
 		try {
 			vertrek.add(Calendar.MINUTE,-1);
 			vl1.zetVertrekTijd(vertrek);//moet al exception opgeven dat het in het verleden ligt
-			vertrek.add(Calendar.MINUTE,1);
-			assertTrue(vl1.getVertrekTijd().equals(null));
-			throw new IllegalArgumentException("Tijd in het verleden");//throwt new exception, omdat datum niet in verleden mag liggen
+			assertNotEquals(vl1.getVertrekTijd(),vertrek);
 
 		} catch (IllegalArgumentException | VluchtException e) {
 			assertEquals("Tijd in het verleden",e.getMessage());
@@ -210,7 +208,7 @@ public class VluchtTest {
 
 	/* test9*/
 	@Test
-	public void testAankomstVoorVertrek_False() {
+	public void test9_AankomstVoorVertrek_False() {
 		Vlucht vlucht = vl1;
 		Calendar vertrek = null;
 		Calendar aankomst = null;
@@ -229,7 +227,7 @@ public class VluchtTest {
 
 	/* test10*/
 	@Test
-	public void testAankomstVoorVertrek_True() {
+	public void test10_AankomstVoorVertrek_True() {
 		Vlucht vlucht = vl1;
 		Calendar vertrek = null;
 		Calendar aankomst = null;
@@ -251,20 +249,18 @@ public class VluchtTest {
 
 	/* test11*/
 	@Test
-	public void testOverlappendeVlucht_Vertrek() {
-
+	public void test11_OverlappendeVlucht_Vertrek() {
 		Calendar vertr = Calendar.getInstance();
-		vertr.set(2020, Calendar.MARCH, 30, 12, 15, 0);
 		Calendar aank = Calendar.getInstance();
+		vertr.set(2020, Calendar.MARCH, 30, 12, 15, 0);
 		aank.set(2020, Calendar.MARCH, 30, 15, 15, 0);
 		Vlucht vlucht1 = new Vlucht(vt1, lh1, lh2, vertr, aank);
-
 		vertr.add(Calendar.HOUR,1); //vertrek vlucht 2 tussen vertek en aankomst vlucht 1
-		Vlucht vlucht2 = new Vlucht(vt1, lh1, lh2, vertr, aank);
+		Vlucht vlucht2 = new Vlucht();
 
 		try {
 			vlucht1.bewaar();
-			System.out.println(vlucht2.getVliegtuig());
+			vlucht2.zetVliegtuig(vt1);
 			vlucht2.zetVertrekTijd(vertr);
 			Calendar testVertek = vlucht2.getVertrekTijd();
 			assertNotNull(testVertek);
@@ -277,7 +273,7 @@ public class VluchtTest {
 	/* test12, Om deze test uittevoeren moet code in Vlucht worden aan gepast, op dit moment is de methode isBezet
 	* alleen gebruikt door de methode zetVertrekTijd en niet door de methode zetAankomstTijd*/
 	@Test
-	public void testOverlappendeVlucht_Aankomst() {
+	public void test12_OverlappendeVlucht_Aankomst() {
 		Calendar vertr = Calendar.getInstance();
 		vertr.set(2020, Calendar.MARCH, 30, 12, 15, 0);
 		Calendar aank = Calendar.getInstance();
@@ -301,7 +297,7 @@ public class VluchtTest {
 	}
 	/* test13*/
 	@Test
-	public void testOverlappendeVlucht_AankomstEnVertrek() {
+	public void test13_OverlappendeVlucht_AankomstEnVertrek() {
 		Calendar vertr = Calendar.getInstance();
 		vertr.set(2020, Calendar.MARCH, 30, 12, 15, 0);
 		Calendar aank = Calendar.getInstance();
@@ -327,7 +323,7 @@ public class VluchtTest {
 	}
 	/* test14*/
 	@Test
-	public void testOverlappendeVlucht_AankomstEnVertrek_True() {
+	public void test14_OverlappendeVlucht_AankomstEnVertrek_True() {
 		Calendar vertr = Calendar.getInstance();
 		vertr.set(2020, Calendar.MARCH, 30, 12, 15, 0);
 		Calendar aank = Calendar.getInstance();
@@ -353,57 +349,58 @@ public class VluchtTest {
 
 	/*test15, jona*/
 	@Test
-	public void testVluchtNietZonderVliegtuig(){
+	public void test15_VluchtNietZonderVliegtuig(){
 		try{
 			Vlucht vlucht = new Vlucht(null, lh1, lh2, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
 			vlucht.bewaar();
-			assertNotEquals(vlucht.getVliegtuig(), null, "Vliegtuig ongeldig");
+			assertNotEquals(null, vlucht.getVliegtuig());
 		} catch (VluchtException e){
-			System.out.println(e.getMessage());
+			assertEquals("Geen geldige vliegtuig.",e.getMessage());
 		}
 	}
 
 	/*test16, jona*/
 	@Test
-	public void testVluchtNietZonderVertrekLuchthaven(){
+	public void test16_VluchtNietZonderVertrekLuchthaven(){
 		try{
 			Vlucht vlucht = new Vlucht(vgt, null, lh2, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
 			vlucht.bewaar();
-			assertNotEquals(vlucht.getVertrekPunt(), null, "Vertrekpunt ongeldig");
+			assertNotEquals(null,vlucht.getVertrekPunt(), "Vertrekpunt ongeldig");
 		} catch (VluchtException e){
-			System.out.println(e.getMessage());
+			assertEquals("Geen geldig vertekpunt.",e.getMessage());
 		}
 	}
 	/*test17, jona*/
 	@Test
-	public void testVluchtNietZonderAankomstLuchthaven(){
+	public void test17_VluchtNietZonderAankomstLuchthaven(){
 		try{
 			Vlucht vlucht = new Vlucht(vgt, lh1, null, vtr, aan);// Zou een exception moeten geven voor geen Vliegtuig
 			vlucht.bewaar();
-			assertNotEquals(vlucht.getBestemming(), null, "Bestemming ongeldig");
+			assertNotEquals(null,vlucht.getBestemming(), "Bestemming ongeldig");
 		} catch (VluchtException e){
-			System.out.println(e.getMessage());
+			assertEquals("Geen geldige bestemming.",e.getMessage());
 		}
 	}
 	/*test18, jona*/
 	@Test
-	public void testVluchtNietZonderCorrecteVertrekTijd(){
-		Calendar tijd = null;
+	public void test18_VluchtNietZonderCorrecteVertrekTijd(){
 		try{
-			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, tijd, aan);// Zou een exception moeten geven voor geen Vliegtuig
+			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, vtr, aan);
+			vlucht.zetVertrekTijd(null);// Zou een exception moeten geven voor geen Vliegtuig
 			vlucht.bewaar();
-			assertNotEquals(vlucht.getVertrekTijd(), null, "Vertrektijd ongeldig");
+			assertNotNull(vlucht.getVertrekTijd(),"Vertrektijd ongeldig");
 		} catch (VluchtException e){
-			System.out.println(e.getMessage());
+			assertEquals("Geen geldige vertrektijd.",e.getMessage());
 		}
 	}
 	/*test19, jona*/
 	@Test
-	public void testVluchtNietZonderCorrecteAankomstTijd(){
+	public void test19_VluchtNietZonderCorrecteAankomstTijd(){
 		try{
-			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, vtr, null);// Zou een exception moeten geven voor geen Vliegtuig
+			Vlucht vlucht = new Vlucht(vgt, lh1, lh2, vtr, aan);
+			vlucht.zetAankomstTijd(null);// Zou een exception moeten geven voor geen Vliegtuig
 			vlucht.bewaar();
-			assertNotEquals(vlucht.getVertrekTijd(), null, "Aankomsttijd ongeldig");
+			assertNotNull(vlucht.getAankomstTijd(),"Aankomsttijd ongeldig");
 		} catch (VluchtException e){
 			System.out.println(e.getMessage());
 		}
