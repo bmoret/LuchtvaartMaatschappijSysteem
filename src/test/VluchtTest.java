@@ -34,7 +34,7 @@ public class VluchtTest {
 			datum.set(2000, 01, 01);
 			vt1 = new Vliegtuig(lvm, vtt1, "Luchtbus 100", datum);
 			Land l1 = new Land("Nederland", 31);
-			Land l2 = new Land("België", 32);
+			Land l2 = new Land("BelgiÃ«", 32);
 			lh1 = new Luchthaven("Schiphol", "ASD", true, l1);
 			lh2 = new Luchthaven("Tegel", "TEG", true, l2);
 			Calendar vertr = Calendar.getInstance();
@@ -91,6 +91,46 @@ public class VluchtTest {
 		catch(IllegalArgumentException e) {
 			bestemming = vlucht.getBestemming();
 			assertTrue(bestemming.equals(lh1));
+		}
+	}
+	
+	/* test3, jona*/
+	@Test
+	public void testDagDatumMagNietHogerZijnDanErInDeMaandZitten_True() {
+		Vlucht vlucht = new Vlucht();
+		try {
+			vlucht.zetVertrekTijd(testDatumVertrekDag);
+
+		} catch (IllegalArgumentException | VluchtException e) {
+			System.out.println(e);
+		}
+	}
+
+	/* test4, jona*/
+	@Test
+	public void testTijdMagNietHogerZijnDanTijdInEenDag_True() {
+		Vlucht vlucht = new Vlucht();
+		try {
+			vlucht.zetAankomstTijd(testUrenAankomst);
+		} catch (IllegalArgumentException | VluchtException e) {
+			System.out.println(e);
+		}
+	}
+
+
+	/* test5, jona*/
+	@Test
+	public void testVertrekDatumVoorVertrekDatumplus1vast_True() {
+		Vlucht vlucht = new Vlucht();
+		try {
+			vlucht.zetVertrekTijd(testDatumDatumplus1);
+			testDatumDatumplus1.set(2025, Calendar.SEPTEMBER, 30, 12,1);
+			vlucht.zetAankomstTijd(testDatumDatumplus1);
+			assertTrue(vlucht.getVertrekTijd().getTime().before(vlucht.getAankomstTijd().getTime()));
+		} catch (IllegalArgumentException | VluchtException e) {
+			System.out.println(e);
+			assertTrue(vlucht.getVertrekTijd().getTime().before(vlucht.getAankomstTijd().getTime()));
+
 		}
 	}
 
